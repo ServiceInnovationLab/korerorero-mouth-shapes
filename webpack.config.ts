@@ -1,10 +1,12 @@
 const webpack = require("webpack");
 const path = require("path");
 const nodeExternals = require("webpack-node-externals");
+const dotenv = require("dotenv");
+dotenv.config();
 
 module.exports = {
   entry: ["webpack/hot/poll?100", "./src/index.ts"],
-  watch: true,
+  watch: process.env.IS_DEV === 'true',
   target: "node",
   externals: [
     nodeExternals({
@@ -20,7 +22,7 @@ module.exports = {
       }
     ]
   },
-  mode: "development",
+  mode: process.env.IS_DEV === 'true' ? "development" : "production",
   resolve: {
     extensions: [".tsx", ".ts", ".js"]
   },
