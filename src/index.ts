@@ -5,7 +5,7 @@ import helmet from "helmet";
 
 dotenv.config();
 
-const PORT: number = parseInt(process.env.EXPRESS_PORT as string, 10);
+const PORT: number = parseInt(process.env.PORT as string, 10);
 
 const app = express();
 
