@@ -4,6 +4,10 @@ Exposing DanielSWolf / rhubarb-lip-sync as a service
 
 ## Installation
 
+Cmake is an external dependency, the OSX version is available here: https://cmake.org/download/
+
+This code was tested against `cmake-3.17.0-rc2-Darwin-x86_64.dmg`
+
 ```bash
 nvm use
 cp .env.example .env 
