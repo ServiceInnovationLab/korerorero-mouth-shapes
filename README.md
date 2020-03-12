@@ -4,14 +4,21 @@ Exposing DanielSWolf / rhubarb-lip-sync as a service
 
 ## Docker setup
 
-```Bash
+```bash
 docker build -t rhubarb-lip-sync:latest . 
 ```
 
 To get a shell
-```Bash
+```bash
 docker run -it rhubarb-lip-sync:latest  /bin/bash   
 ```
+
+To run
+
+```bash
+docker run -p 3000:3000 rhubarb-lip-sync:latest
+```
+
 
 ## Installation
 
