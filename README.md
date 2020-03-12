@@ -2,6 +2,17 @@
 
 Exposing DanielSWolf / rhubarb-lip-sync as a service
 
+## Docker setup
+
+```Bash
+docker build -t rhubarb-lip-sync:latest . 
+```
+
+To get a shell
+```Bash
+docker run -it rhubarb-lip-sync:latest  /bin/bash   
+```
+
 ## Installation
 
 Cmake is an external dependency, the OSX version is available here: https://cmake.org/download/
