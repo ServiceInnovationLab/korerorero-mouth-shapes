@@ -5,7 +5,7 @@ Exposing DanielSWolf / rhubarb-lip-sync as a service
 ## Docker setup
 
 ```bash
-docker build -t rhubarb-lip-sync:latest . 
+DOCKER_BUILDKIT=1 docker build --ssh default -t rhubarb-lip-sync:latest . 
 ```
 
 To get a shell
