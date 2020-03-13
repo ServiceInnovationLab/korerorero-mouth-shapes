@@ -8,7 +8,7 @@
     "vendor:dir-check-clone": "[ -d 'vendor/rhubarb-lip-sync' ]  && echo 'ℹ️ Directory vendor/rhubarb-lip-sync exists.' || run-s clone",
     "vendor:disable-extras": "sed -i '/^add_subdirectory(\"extras/d' vendor/rhubarb-lip-sync/CMakeLists.txt",
     "vendor:compile": "cmake-js compile -Wno-dev --CDBoost_NO_BOOST_CMAKE=ON -d vendor/rhubarb-lip-sync  ",
-    "clone": "mkdir vendor; cd vendor; git clone git@github.com:ServiceInnovationLab/rhubarb-lip-sync.git",
+    "clone": "mkdir vendor; cd vendor; git clone https://github.com/ServiceInnovationLab/rhubarb-lip-sync.git",
     "clean": "rm -rf vendor/rhubarb-lip-sync",
     "start": "node dist/index.js",
     "build": "webpack",
