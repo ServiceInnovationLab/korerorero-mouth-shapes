@@ -4,15 +4,23 @@
   "description": "Exposing DanielSWolf / rhubarb-lip-sync as a service",
   "main": "index.js",
   "scripts": {
+    "install": "run-s vendor:*",
+    "vendor:dir-check-clone": "[ -d 'vendor/rhubarb-lip-sync' ]  && echo 'ℹ️ Directory vendor/rhubarb-lip-sync exists.' || run-s clone",
+    "vendor:disable-extras": "sed -i '/^add_subdirectory(\"extras/d' vendor/rhubarb-lip-sync/CMakeLists.txt",
+    "vendor:compile": "cmake-js compile -Wno-dev --CDBoost_NO_BOOST_CMAKE=ON -d vendor/rhubarb-lip-sync  ",
+    "clone": "mkdir vendor; cd vendor; git clone https://github.com/ServiceInnovationLab/rhubarb-lip-sync.git",
+    "clean": "rm -rf vendor/rhubarb-lip-sync",
     "start": "node dist/index.js",
     "build": "webpack",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
+    "cmake-js": "^6.1.0",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
-    "helmet": "^3.21.3"
+    "helmet": "^3.21.3",
+    "npm-run-all": "^4.1.5"
   },
   "devDependencies": {
     "@types/cors": "^2.8.6",
