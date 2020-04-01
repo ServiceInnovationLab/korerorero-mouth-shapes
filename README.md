@@ -5,33 +5,33 @@ Exposing DanielSWolf / rhubarb-lip-sync as a service
 ## Docker setup
 
 ```bash
-docker build -t rhubarb-lip-sync:latest .
+docker build -t korerorero-mouth-shapes:latest .
 ```
 
 To run
 
 ```bash
-docker run -p 3000:3000 rhubarb-lip-sync:latest
+docker run -p 3000:3000 korerorero-mouth-shapes:latest
 ```
 
 Debug / to get a shell
 
 ```bash
-docker run -it rhubarb-lip-sync:latest /bin/bash
+docker run -it korerorero-mouth-shapes:latest /bin/bash
 ```
 
 To run
 
 ```bash
-docker run -p 3000:3000 rhubarb-lip-sync:latest
+docker run -p 3000:3000 korerorero-mouth-shapes:latest
 ```
 
 To use as a development environment:
 
-Changes in local `dist` folder are mapped into docker container.
+Changes in local project folder are mapped into docker container.
 
 ```bash
-docker run -p 3000:3000 -v $PWD/dist:/usr/src/app/dist rhubarb-lip-sync:latest
+docker run -p 3000:3000 -v $PWD:/usr/src/app korerorero-mouth-shapes:latest
 ```
 
 ## Installation

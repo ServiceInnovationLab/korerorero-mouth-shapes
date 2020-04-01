@@ -1,15 +1,33 @@
 import axios from "axios";
 import fs from "fs";
 import tmp from "tmp";
-// import { rhubarbCmd } from "../utils";
+import { rhubarbCmd } from "../utils";
+import { exec } from "child_process";
 
-const request = "http://tts:59125/process?INPUT_TYPE=TEXT&AUDIO=WAVE_FILE&OUTPUT_TYPE=AUDIO&LOCALE=en_US&INPUT_TEXT=hello%20world"
+const request =
+  "http://tts:59125/process?INPUT_TYPE=TEXT&AUDIO=WAVE_FILE&OUTPUT_TYPE=AUDIO&LOCALE=en_US&INPUT_TEXT=hello%20world";
+
+const downloadAudio = async () => {
+  const tmpFile = tmp.tmpNameSync();
+  const shapesFileName = tmpFile + ".txt";
+  const audioFileName = tmpFile + ".wav";
+  const response = await axios.get(request, { responseType: "arraybuffer" });
+  console.log(response.data);
+  fs.writeFileSync(audioFileName, Buffer.from(response.data, 'binary'));
+  return { audioFileName, shapesFileName };
+};
 
 const reply = async () => {
-  const audioFileName = tmp.tmpNameSync();
-  const response = await axios.get(request); 
-  fs.writeFileSync(audioFileName, response.data);
-  return audioFileName;
+  const fileNames = await downloadAudio();
+  const cmd = `${rhubarbCmd} -o ${fileNames.shapesFileName} ${fileNames.audioFileName}`;
+  return new Promise((resolve, reject) => {
+    exec(cmd, (error, _stdout, _stderr) => {
+      if (error) {
+        reject(`rhubarbCmd error: ${error?.message}`);
+      }
+      resolve(fileNames);
+    });
+  });
 };
 
 export default reply;
