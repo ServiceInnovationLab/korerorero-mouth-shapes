@@ -1,9 +1,11 @@
 import * as dotenv from "dotenv";
 import express from "express";
+import querystring from "querystring";
 import cors from "cors";
 import helmet from "helmet";
 import { exec } from "child_process";
-
+import { rhubarbCmd } from "./utils"
+import getShapes from "./api/get-shapes";
 
 dotenv.config();
 
@@ -13,7 +15,7 @@ const app = express();
 
 let rhubarbVersion: String;
 
-exec("./vendor/rhubarb-lip-sync/build/rhubarb/rhubarb --version", (error, stdout, stderr) => {
+exec(rhubarbCmd + "--version", (error, stdout, stderr) => {
   if (error) {
       console.log(`error: ${error.message}`);
       return;
@@ -31,6 +33,13 @@ app.use(express.json());
 app.get("/", function(_req, res) {
   res.send(rhubarbVersion);
 });
+
+app.get("/process", function(req, res) {
+  //const speechUrl = req.query.speech_url;
+
+  res.send(getShapes() );
+});
+
 
 const server = app.listen(PORT, () => {
   console.log(`Listening on port ${PORT}`);

@@ -26,6 +26,14 @@ To run
 docker run -p 3000:3000 rhubarb-lip-sync:latest
 ```
 
+To use as a development environment:
+
+Changes in local `dist` folder are mapped into docker container.
+
+```bash
+docker run -p 3000:3000 -v $PWD/dist:/usr/src/app/dist rhubarb-lip-sync:latest
+```
+
 ## Installation
 
 Cmake is an external dependency, the OSX version is available here: <https://cmake.org/download/>
