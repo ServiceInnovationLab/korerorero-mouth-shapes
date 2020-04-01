@@ -34,10 +34,10 @@ app.get("/", function(_req, res) {
   res.send("Sanity check: " + rhubarbVersion);
 });
 
-app.get("/process", function(req, res) {
+app.get("/process", async function(req, res) {
   //const speechUrl = req.query.speech_url;
-
-  res.send(getShapes() );
+  const shapes = await getShapes()
+  res.send(shapes );
 });
 
 
