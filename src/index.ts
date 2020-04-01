@@ -31,7 +31,7 @@ app.use(helmet());
 app.use(cors());
 app.use(express.json());
 app.get("/", function(_req, res) {
-  res.send(rhubarbVersion);
+  res.send("Sanity check: " + rhubarbVersion);
 });
 
 app.get("/process", function(req, res) {
@@ -42,7 +42,7 @@ app.get("/process", function(req, res) {
 
 
 const server = app.listen(PORT, () => {
-  console.log(`Sanity check: Listening on port ${PORT}`);
+  console.log(`Listening on port ${PORT}`);
 });
 
 type ModuleId = string | number;
