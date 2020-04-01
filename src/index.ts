@@ -42,7 +42,7 @@ app.get("/process", function(req, res) {
 
 
 const server = app.listen(PORT, () => {
-  console.log(`Listening on port ${PORT}`);
+  console.log(`Sanity check: Listening on port ${PORT}`);
 });
 
 type ModuleId = string | number;
