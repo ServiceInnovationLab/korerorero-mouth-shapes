@@ -4,16 +4,14 @@ import tmp from "tmp";
 import { rhubarbCmd } from "../utils";
 import { exec } from "child_process";
 
-const request =
-  "http://tts:59125/process?INPUT_TYPE=TEXT&AUDIO=WAVE_FILE&OUTPUT_TYPE=AUDIO&LOCALE=en_US&INPUT_TEXT=hello%20world";
+const request = "http://localhost:3001/process.wav";
 
 const downloadAudio = async () => {
   const tmpFile = tmp.tmpNameSync();
   const shapesFileName = tmpFile + ".txt";
   const audioFileName = tmpFile + ".wav";
   const response = await axios.get(request, { responseType: "arraybuffer" });
-  console.log(response.data);
-  fs.writeFileSync(audioFileName, Buffer.from(response.data, 'binary'));
+  fs.writeFileSync(audioFileName, Buffer.from(response.data, "binary"));
   return { audioFileName, shapesFileName };
 };
 

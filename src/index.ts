@@ -1,15 +1,11 @@
-import * as dotenv from "dotenv";
 import express from "express";
 import querystring from "querystring";
 import cors from "cors";
 import helmet from "helmet";
 import { exec } from "child_process";
-import { rhubarbCmd } from "./utils"
+import { rhubarbCmd, PORT } from "./utils"
 import getShapes from "./api/get-shapes";
-
-dotenv.config();
-
-const PORT: number = parseInt(process.env.PORT as string, 10);
+import { read } from "fs";
 
 const app = express();
 
@@ -31,12 +27,18 @@ app.use(helmet());
 app.use(cors());
 app.use(express.json());
 app.get("/", function(_req, res) {
-  res.send("Sanity check: " + rhubarbVersion);
+  res.send("OK. " + rhubarbVersion);
 });
+
+// TODO, tidy up api documentation
+// const request =
+//   "http://tts:59125/process?INPUT_TYPE=TEXT&AUDIO=WAVE_FILE&OUTPUT_TYPE=AUDIO&LOCALE=en_US&INPUT_TEXT=hello%20world";
+
 
 app.get("/process", async function(req, res) {
   //const speechUrl = req.query.speech_url;
   const shapes = await getShapes()
+  //res.header({link: shapes.shapesFileName})
   res.send(shapes );
 });
 

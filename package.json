@@ -12,7 +12,7 @@
     "clean": "rm -rf vendor/rhubarb-lip-sync",
     "start": "node dist/index.js",
     "build": "webpack",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
   "dependencies": {
     "@types/tmp": "^0.1.0",
@@ -28,13 +28,17 @@
     "tmp": "^0.1.0"
   },
   "devDependencies": {
+    "@babel/core": "^7.9.0",
+    "@babel/preset-env": "^7.9.0",
     "@types/cors": "^2.8.6",
     "@types/dotenv": "^8.2.0",
     "@types/express": "^4.17.4",
     "@types/helmet": "0.0.45",
     "@types/jest": "^25.1.4",
     "@types/node": "^13.9.8",
+    "babel-jest": "^25.2.4",
     "jest": "^25.2.4",
+    "json-server": "^0.16.1",
     "ts-loader": "^6.2.2",
     "typescript": "^3.8.3",
     "webpack": "^4.42.1",
