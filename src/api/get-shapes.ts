@@ -4,28 +4,35 @@ import tmp from "tmp";
 import { rhubarbCmd } from "../utils";
 import { exec } from "child_process";
 
-const request = "http://localhost:3001/process.wav";
+interface AudioAndShapes {
+  shapesFileName: string;
+  audioFileName: string;
+}
 
-const downloadAudio = async () => {
+const downloadAudio = async (request: string) => {
   const tmpFile = tmp.tmpNameSync();
   const shapesFileName = tmpFile + ".txt";
   const audioFileName = tmpFile + ".wav";
   const response = await axios.get(request, { responseType: "arraybuffer" });
+  console.info(`Got URL: ${request}`)
   fs.writeFileSync(audioFileName, Buffer.from(response.data, "binary"));
+  console.info(`Wrote file: ${audioFileName}`)
   return { audioFileName, shapesFileName };
 };
 
-const reply = async () => {
-  const fileNames = await downloadAudio();
-  const cmd = `${rhubarbCmd} -o ${fileNames.shapesFileName} ${fileNames.audioFileName}`;
-  return new Promise((resolve, reject) => {
+const getShapes = async (request: string) => {
+  const fileNames = await downloadAudio(request);
+  const cmd = `${rhubarbCmd} -r phonetic -f json -o ${fileNames.shapesFileName} ${fileNames.audioFileName}`;
+  console.info(`cmd: ${cmd}`)
+  return new Promise<AudioAndShapes>((resolve, reject) => {
     exec(cmd, (error, _stdout, _stderr) => {
       if (error) {
         reject(`rhubarbCmd error: ${error?.message}`);
       }
+      console.info(`Ran cmd`)
       resolve(fileNames);
     });
   });
 };
 
-export default reply;
+export default getShapes;

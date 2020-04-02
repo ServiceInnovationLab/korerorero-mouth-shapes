@@ -1,4 +1,5 @@
-// jest.config.js
 module.exports = {
-  modulePathIgnorePatterns: ["<rootDir>/vendor/"]
+  preset: 'ts-jest',
+  testEnvironment: 'node',
+  modulePathIgnorePatterns: ["<rootDir>/vendor/"], 
 };

@@ -1,12 +1,11 @@
-import server from "../__mocks__/server";
 
 import getShapes from "./get-shapes";
 
-test("adds 1 + 2 to equal 3", async () => {
-  const shapes = await getShapes();
-  expect(shapes).toBe(3);
+test("Passing a URL to a WAV returns the location of the mouth shape analysis and location of the downloaded WAV file.", async () => {
+  const request = "http://127.0.0.1:3000/process.wav";
+  const shapes = await getShapes(request);
+  expect(shapes.audioFileName).toMatch("/tmp/tmp-");
+  expect(shapes.audioFileName).toMatch(".wav");
+  expect(shapes.shapesFileName).toMatch("/tmp/tmp-");
+  expect(shapes.shapesFileName).toMatch(".txt");
 });
-
-// server.close(function() {
-//   console.log("closed");
-// });

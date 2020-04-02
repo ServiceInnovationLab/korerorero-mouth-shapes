@@ -31,13 +31,13 @@ app.get("/", function(_req, res) {
 });
 
 // TODO, tidy up api documentation
-// const request =
-//   "http://tts:59125/process?INPUT_TYPE=TEXT&AUDIO=WAVE_FILE&OUTPUT_TYPE=AUDIO&LOCALE=en_US&INPUT_TEXT=hello%20world";
+const request =
+   "http://tts:59125/process?INPUT_TYPE=TEXT&AUDIO=WAVE_FILE&OUTPUT_TYPE=AUDIO&LOCALE=en_US&INPUT_TEXT=hello%20world";
 
 
 app.get("/process", async function(req, res) {
   //const speechUrl = req.query.speech_url;
-  const shapes = await getShapes()
+  const shapes = await getShapes(request)
   //res.header({link: shapes.shapesFileName})
   res.send(shapes );
 });
