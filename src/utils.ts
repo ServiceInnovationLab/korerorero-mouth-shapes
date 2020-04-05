@@ -7,5 +7,5 @@ const env = envalid.cleanEnv(process.env, {
   PORT: port(),
 });
 
-export const PORT = parseInt(String(process.env.PORT), 10);
+export const PORT = parseInt(String(env.PORT), 10);
 export const rhubarbCmd = "./vendor/rhubarb/rhubarb ";
