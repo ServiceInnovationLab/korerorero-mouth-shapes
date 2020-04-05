@@ -14,6 +14,12 @@ To run
 docker run -p 3000:3000 korerorero-mouth-shapes:latest
 ```
 
+To run tests on local code changes
+
+```bash
+docker run -it  -v $PWD/src:/usr/src/app/src korerorero-mouth-shapes:latest /usr/bin/npm test
+```
+
 Debug / to get a shell
 
 ```bash

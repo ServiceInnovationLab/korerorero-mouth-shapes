@@ -12,10 +12,10 @@ interface AudioAndShapes {
 }
 
 const shapesID = (path: string): string => {
-  const parts: Array<string> = path.split("/");
-  const fileName: string = parts[parts.length - 1];
-  const things: Array<string> = fileName.split(".");
-  return things[0];
+  const pathParts: Array<string> = path.split("/");
+  const fileName: string = pathParts[pathParts.length - 1];
+  const fileNameParts: Array<string> = fileName.split(".");
+  return fileNameParts[0];
 };
 
 const downloadAudio = async (request: string): Promise<string | boolean> => {
