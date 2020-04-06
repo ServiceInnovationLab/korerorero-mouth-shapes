@@ -19,6 +19,7 @@
     "fs": "0.0.1-security",
     "helmet": "^3.22.0",
     "querystring": "^0.2.0",
+    "sanitize-filename": "^1.6.3",
     "tmp": "^0.1.0"
   },
   "devDependencies": {

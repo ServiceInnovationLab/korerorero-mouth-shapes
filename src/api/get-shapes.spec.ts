@@ -7,10 +7,10 @@ test("Passing a URL (of a WAV) returns the location of the mouth shape analysis 
   expect(shapes.audioFileName).toMatch("/tmp/voice_");
   expect(shapes.audioFileName).toMatch(".wav");
   expect(shapes.shapesFileName).toMatch("/tmp/shapes_");
-  expect(shapes.shapesFileName).toMatch(".txt");
+  expect(shapes.shapesFileName).toMatch(".json");
   expect(shapes.shapesID).toMatch("shapes_");
   expect(shapes.shapesID).not.toMatch("/tmp/shapes_");
-  expect(shapes.shapesID).not.toMatch(".txt");
+  expect(shapes.shapesID).not.toMatch(".json");
 });
 
 test("Passing an invalid URL returns shapes.valid=false.", async () => {
