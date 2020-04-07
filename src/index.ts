@@ -1,6 +1,5 @@
 import express from "express";
-import querystring from "querystring";
-import cors from "cors";
+import querystring from "querystring"
 import helmet from "helmet";
 import { exec } from "child_process";
 import { rhubarbCmd, PORT } from "./utils";
@@ -23,7 +22,8 @@ exec(rhubarbCmd + "--version", (error, stdout, stderr) => {
 });
 
 app.use(helmet());
-app.use(cors());
+app.use(helmet.xssFilter());
+app.disable('x-powered-by');
 app.use(express.json());
 app.get("/", function(_req, res) {
   res.send("OK. " + rhubarbVersion);
