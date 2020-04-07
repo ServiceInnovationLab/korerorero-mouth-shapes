@@ -1,0 +1,26 @@
+language: generic 
+sudo: required
+services:
+    - docker 
+
+# Build testing container
+before_install:
+    - docker build -t korerorero-mouthshapes/test-container -f .
+
+# Run Tests
+script:
+    - docker run -e CI=true korerorero-mouthshapes/test-container npm test -- --coverage
+
+# Deploy on AWS
+deploy: 
+  provider: elasticbeanstalk 
+  region: "ap-southeast-2"
+  app: "Korerorero"
+  env: "Korerorero-env" 
+  bucket_name: "elasticbeanstalk-ap-southeast-2-826261054678"
+  bucket_path: "Korerorero"
+  on:
+    branch: master
+  access_key_id: $AWS_ACCESS_KEY
+  secret_access_key:
+      secure: $AWS_SECRET_KEY
