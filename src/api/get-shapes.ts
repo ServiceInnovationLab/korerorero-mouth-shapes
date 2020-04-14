@@ -1,8 +1,14 @@
 import axios from "axios";
 import fs from "fs";
 import tmp from "tmp";
-import { rhubarbCmd } from "../utils";
+import { rhubarbCmd, tmpDir } from "../utils";
 import { exec } from "child_process";
+import sanitize from "sanitize-filename"
+
+const PREFIX_VOICE = "voice_";
+const PREFIX_SHAPES = "shapes_"
+const POSTFIX_VOICE = ".wav"
+const POSTFIX_SHAPES = ".json"
 
 interface AudioAndShapes {
   shapesFileName: string;
@@ -18,8 +24,12 @@ const shapesID = (path: string): string => {
   return fileNameParts[0];
 };
 
+const shapesFilePath = (id: string): string => {  
+  return `${tmpDir}${sanitize(id)}${POSTFIX_SHAPES}`
+}
+
 const downloadAudio = async (request: string): Promise<string | boolean> => {
-  const audioFileName = tmp.tmpNameSync({ prefix: "voice_", postfix: ".wav" });
+  const audioFileName = tmp.tmpNameSync({ prefix: PREFIX_VOICE, postfix: POSTFIX_VOICE });
   const response = await axios
     .get(request, { responseType: "arraybuffer" })
     .catch(function(error) {
@@ -33,11 +43,11 @@ const downloadAudio = async (request: string): Promise<string | boolean> => {
   }
 };
 
-const getShapes = async (request: string): Promise<AudioAndShapes> => {
+const parseAudio = async (request: string): Promise<AudioAndShapes> => {
   const audioFileName = await downloadAudio(request);
   const shapesFileName = tmp.tmpNameSync({
-    prefix: "shapes_",
-    postfix: ".txt"
+    prefix: PREFIX_SHAPES,
+    postfix: POSTFIX_SHAPES
   });
   const fileNames: AudioAndShapes = {
     audioFileName: String(audioFileName),
@@ -60,4 +70,8 @@ const getShapes = async (request: string): Promise<AudioAndShapes> => {
   });
 };
 
-export default getShapes;
+export const getShapesById = (id: string):Buffer => {
+  return fs.readFileSync(shapesFilePath(id));
+}
+
+export default parseAudio
