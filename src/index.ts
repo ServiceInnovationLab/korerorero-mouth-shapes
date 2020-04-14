@@ -32,9 +32,18 @@ app.get("/", function(_req, res) {
 app.get("/process", async function(req, res) {
   const request = req.query.speech_url;
   if (!request) {
-    res.send(500);
+    res.sendStatus(500);
+    return;
   }
+  console.info(`ℹ️ Calling parseAudio(${request})`)
   const shapes = await parseAudio(request);
+  if (!shapes.audioFileName) {
+    console.error(`❌ shapes.audioFileName was returned falsy`)
+    res.sendStatus(500);
+    return;
+  }
+  console.info(`ℹ️ shapes.shapesID=${shapes.shapesID}`);
+  console.info(`ℹ️ shapes.audioFileName=${shapes.audioFileName}`);
   res.set("Content-Type", "audio/wav");
   res.header({ link: `/shapes?shapes_id=${shapes.shapesID}` });
   res.sendFile(shapes.audioFileName);
