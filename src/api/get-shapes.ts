@@ -30,15 +30,18 @@ const shapesFilePath = (id: string): string => {
 
 const downloadAudio = async (request: string): Promise<string | boolean> => {
   const audioFileName = tmp.tmpNameSync({ prefix: PREFIX_VOICE, postfix: POSTFIX_VOICE });
+  console.info(`ℹ️ Getting audio ${request}`);
   const response = await axios
     .get(request, { responseType: "arraybuffer" })
     .catch(function(error) {
-      console.log("Error", error.message);
+      console.error(`❌ Error getting audio file: ${error.message}` );
     });
   if (response) {
     fs.writeFileSync(audioFileName, Buffer.from(response.data, "binary"));
+    console.info(`✅ Wrote audio file ${audioFileName}`);
     return audioFileName;
   } else {
+    console.error(`❌ Error writing audio file`);
     return false;
   }
 };
@@ -59,12 +62,15 @@ const parseAudio = async (request: string): Promise<AudioAndShapes> => {
     return fileNames;
   }
   const cmd = `${rhubarbCmd} -r phonetic -f json -o ${fileNames.shapesFileName} ${fileNames.audioFileName}`;
-  console.info(`cmd: ${cmd}`);
+  console.info(`ℹ️ Constructed command: ${cmd}`);
   return new Promise<AudioAndShapes>((resolve, reject) => {
     exec(cmd, (error, _stdout, _stderr) => {
       if (error) {
-        reject(`rhubarbCmd error: ${error?.message}`);
+        const errorMessage = `❌ Rhubarb command returned error: ${error?.message}`
+        console.error(errorMessage);
+        reject(errorMessage);
       }
+      console.info(`✅ Rhubarb command executed successfully`);
       resolve(fileNames);
     });
   });
