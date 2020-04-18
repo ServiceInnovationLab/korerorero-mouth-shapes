@@ -101,7 +101,7 @@ const parseAudioToJson = async (request: string): Promise<ResultJson> => {
   const json: ResultJson = JSON.parse(
     fs.readFileSync(result.shapesFileName).toString()
   );
-  json.metadata.soundFile = "/audio/" + result.audioId;
+  json.metadata.soundFile = "/audio?id=" + result.audioId;
   return json;
 };
 

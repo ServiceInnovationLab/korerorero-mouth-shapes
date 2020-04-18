@@ -35,7 +35,7 @@ test(`Passing a URL (of a WAV) returns the location of the mouth\
  shape analysis and location of the downloaded WAV file.`, async () => {
   const request = "http://127.0.0.1:3000/process.wav";
   const json = await getShapes(request);
-  expect(json.metadata.soundFile).toMatch("/audio/voice_");
+  expect(json.metadata.soundFile).toMatch("/audio?id=voice_");
   expect(json.metadata.soundFile).not.toMatch(".wav");
   expect(json.mouthCues.length).toEqual(17);
 });
