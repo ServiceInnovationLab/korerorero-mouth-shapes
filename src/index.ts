@@ -1,9 +1,8 @@
 import express from "express";
-import querystring from "querystring"
 import helmet from "helmet";
 import { exec } from "child_process";
 import { rhubarbCmd, PORT } from "./utils";
-import parseAudio, { getShapesById } from "./api/get-shapes";
+import getShapes, { getAudioById } from "./api/get-shapes";
 
 const app = express();
 
@@ -29,30 +28,33 @@ app.get("/", function(_req, res) {
   res.send("OK. " + rhubarbVersion);
 });
 
-app.get("/process", async function(req, res) {
-  const request = req.query.speech_url;
+app.get("/process/:speechUrl", async function(req, res) {
+  const request = String(req.query.speechUrl);
   if (!request) {
     res.sendStatus(500);
     return;
   }
   console.info(`ℹ️ Calling parseAudio(${request})`)
-  const shapes = await parseAudio(request);
-  if (!shapes.audioFileName) {
-    console.error(`❌ shapes.audioFileName was returned falsy`)
+  const results = await getShapes(request);
+  if (!results.metadata.soundFile) {
+    console.error(`❌ results.metadata.soundFile was returned falsy`)
     res.sendStatus(500);
     return;
   }
-  console.info(`ℹ️ shapes.shapesID=${shapes.shapesID}`);
-  console.info(`ℹ️ shapes.audioFileName=${shapes.audioFileName}`);
-  res.set("Content-Type", "audio/wav");
-  res.header({ link: `/shapes?shapes_id=${shapes.shapesID}` });
-  res.sendFile(shapes.audioFileName);
+  console.info(`ℹ️ results.metadata.soundFile=${results.metadata.soundFile}`);
+  res.set("Content-Type", "application/json");
+  res.send(results);
 });
 
-app.get("/shapes", function (req, res) {
-  const shapesId = req.query.shapes_id;
-  res.set("Content-Type", "application/json");
-  res.send(getShapesById(shapesId));
+app.get("/audio/:audioId", function (req, res) {
+  const audioId = String(req.query.audioId);
+  if (!audioId) {
+    console.error(`❌ :audioId param is falsy`)
+    res.sendStatus(500);
+    return;
+  }
+  res.set("Content-Type", "audio/wav");
+  res.send(getAudioById(audioId));
 });
 
 const server = app.listen(PORT, () => {
