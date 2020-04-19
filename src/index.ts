@@ -11,11 +11,11 @@ let rhubarbVersion: String;
 
 exec(rhubarbCmd + "--version", (error, stdout, stderr) => {
   if (error) {
-    console.log(`error: ${error.message}`);
+    console.log(`❌ error: ${error.message}`);
     return;
   }
   if (stderr) {
-    console.log(`stderr: ${stderr}`);
+    console.log(`❌ stderr: ${stderr}`);
     return;
   }
   rhubarbVersion = stdout;
@@ -34,13 +34,11 @@ app.get("/", function (_req, res) {
 
 // ANCHOR /process 
 app.post("/process", async function (req, res) {
-  console.log(`ℹ️ ${JSON.stringify(req.body)}`);
   const request = String(req.body.speech_url);
   if (!request) {
     res.sendStatus(500);
     return;
   }
-  console.info(`ℹ️ Calling parseAudio(${request})`);
   const results = await getShapes(request);
   if (!results.metadata.soundFile) {
     console.error(`❌ results.metadata.soundFile was returned falsy`);
