@@ -50,7 +50,7 @@ app.post("/process", async function (req, res) {
   res.send(results);
 });
 
-// ANCHOR /audio/:audioId
+// ANCHOR /audio?id=<audioId>
 
 app.get("/audio", function (req, res) {
   const audioId = String(req.query.id);
