@@ -1,9 +1,9 @@
 import express from "express";
-import querystring from "querystring"
 import helmet from "helmet";
 import { exec } from "child_process";
 import { rhubarbCmd, PORT } from "./utils";
-import parseAudio, { getShapesById } from "./api/get-shapes";
+import getShapes, { getAudioById } from "./api/get-shapes";
+import bodyParser from "body-parser";
 
 const app = express();
 
@@ -11,52 +11,61 @@ let rhubarbVersion: String;
 
 exec(rhubarbCmd + "--version", (error, stdout, stderr) => {
   if (error) {
-      console.log(`error: ${error.message}`);
-      return;
+    console.log(`❌ error: ${error.message}`);
+    return;
   }
   if (stderr) {
-      console.log(`stderr: ${stderr}`);
-      return;
+    console.log(`❌ stderr: ${stderr}`);
+    return;
   }
   rhubarbVersion = stdout;
 });
 
 app.use(helmet());
 app.use(helmet.xssFilter());
-app.disable('x-powered-by');
+app.disable("x-powered-by");
 app.use(express.json());
-app.get("/", function(_req, res) {
+app.use(bodyParser.json())
+
+// ANCHOR / 
+app.get("/", function (_req, res) {
   res.send("OK. " + rhubarbVersion);
 });
 
-app.get("/process", async function(req, res) {
-  const request = req.query.speech_url;
+// ANCHOR /process 
+app.post("/process", async function (req, res) {
+  const request = String(req.body.speech_url);
   if (!request) {
     res.sendStatus(500);
     return;
   }
-  console.info(`ℹ️ Calling parseAudio(${request})`)
-  const shapes = await parseAudio(request);
-  if (!shapes.audioFileName) {
-    console.error(`❌ shapes.audioFileName was returned falsy`)
+  const results = await getShapes(request);
+  if (!results.metadata.soundFile) {
+    console.error(`❌ results.metadata.soundFile was returned falsy`);
     res.sendStatus(500);
     return;
   }
-  console.info(`ℹ️ shapes.shapesID=${shapes.shapesID}`);
-  console.info(`ℹ️ shapes.audioFileName=${shapes.audioFileName}`);
-  res.set("Content-Type", "audio/wav");
-  res.header({ link: `/shapes?shapes_id=${shapes.shapesID}` });
-  res.sendFile(shapes.audioFileName);
+  console.info(`ℹ️ results.metadata.soundFile=${results.metadata.soundFile}`);
+  res.set("Content-Type", "application/json");
+  res.send(results);
 });
 
-app.get("/shapes", function (req, res) {
-  const shapesId = req.query.shapes_id;
-  res.set("Content-Type", "application/json");
-  res.send(getShapesById(shapesId));
+// ANCHOR /audio?id=<audioId>
+
+app.get("/audio", function (req, res) {
+  const audioId = String(req.query.id);
+  if (!audioId) {
+    console.error(`❌ :audioId param is falsy`);
+    res.sendStatus(500);
+    return;
+  }
+  console.error(`ℹ️ Looking up ${audioId}`);
+  res.set("Content-Type", "audio/wav");
+  res.send(getAudioById(audioId));
 });
 
 const server = app.listen(PORT, () => {
-  console.log(`Listening on port ${PORT}`);
+  console.log(`ℹ️ Listening on port ${PORT}`);
 });
 
 type ModuleId = string | number;
@@ -82,4 +91,4 @@ if (process.env.IS_DEV === "true" && module.hot) {
 
 // API: https://www.npmjs.com/package/passport-headerapikey
 
-//API: location of file to analyse 
+//API: location of file to analyse
