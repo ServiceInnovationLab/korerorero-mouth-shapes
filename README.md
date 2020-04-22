@@ -1,4 +1,6 @@
-# korerorero-mouth-shapes
+# Korerorero / Mouth Shapes
+
+This project is a component of korerorero-reverse-proxy project: <https://github.com/ServiceInnovationLab/korerorero-reverse-proxy>
 
 Exposing DanielSWolf / rhubarb-lip-sync as a service
 
@@ -8,31 +10,25 @@ Exposing DanielSWolf / rhubarb-lip-sync as a service
 docker build -t korerorero-mouth-shapes:latest .
 ```
 
-To run
+__To run__
 
 ```bash
 docker run -p 3000:3000 korerorero-mouth-shapes:latest
 ```
 
-To run tests on local code changes
+__To run tests on local code changes__
 
 ```bash
 docker run -it  -v $PWD/src:/usr/src/app/src korerorero-mouth-shapes:latest /usr/bin/npm test
 ```
 
-Debug / to get a shell
+__Debug / to get a shell__
 
 ```bash
 docker run -it korerorero-mouth-shapes:latest /bin/bash
 ```
 
-To run
-
-```bash
-docker run -p 3000:3000 korerorero-mouth-shapes:latest
-```
-
-To use as a development environment:
+__To use as a development environment__
 
 Changes in local project folder are mapped into docker container.
 
@@ -42,22 +38,16 @@ docker run -p 3000:3000 -v $PWD:/usr/src/app korerorero-mouth-shapes:latest
 
 ## Installation
 
-Cmake is an external dependency, the OSX version is available here: <https://cmake.org/download/>
+Use the docker instructions above. It's a whole thing to set up this environment on your local machine.
 
-This code was tested against `cmake-3.17.0-rc2-Darwin-x86_64.dmg`
-
-```bash
-nvm use
-cp .env.example .env
-npm i
-```
+Visit <http://localhost:3000/> and you should see the Rhubarb version installed.
 
 ## Development
+
+(From within a docker instance)
 
 Build and watch files for changes, and start the express server with hot swapping enabled
 
 ```bash
 npm run build & npm start
 ```
-
-Visit <http://localhost:3000/> and you should see the Rhubarb version installed.
