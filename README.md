@@ -4,6 +4,12 @@ This project is a component of korerorero-reverse-proxy project: <https://github
 
 Exposing DanielSWolf / rhubarb-lip-sync as a service
 
+## .env setup
+
+```bash
+cp .env.example .env
+```
+
 ## Docker setup
 
 ```bash
