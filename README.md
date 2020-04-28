@@ -46,7 +46,7 @@ docker run -p 3000:3000 -v $PWD:/usr/src/app korerorero-mouth-shapes:latest
 
 Use the docker instructions above. It's a whole thing to set up this environment on your local machine.
 
-Visit <http://localhost:3000/> and you should see the Rhubarb version installed.
+Once you have the docker image running, visit <http://localhost:3000/> and you should see the Rhubarb version installed.
 
 ## Development
 
